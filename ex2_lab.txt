@@ -1,0 +1,20 @@
+**Schema (MySQL v5.7)**
+
+    create table test2(id integer,name varchar(20));
+    insert into test2 values(2,'ram');
+    insert into test2 values(3,'siya');
+
+---
+
+**Query #1**
+
+    select * from test2;
+
+| id  | name |
+| --- | ---- |
+| 2   | ram  |
+| 3   | siya |
+
+---
+
+[View on DB Fiddle](https://www.db-fiddle.com/f/tBWUn8qF9KKLrjLm35yU6D/0)

@@ -1,0 +1,18 @@
+**Schema (MySQL v5.7)**
+
+    create table test1(id integer);
+    insert into test1 values(1);
+
+---
+
+**Query #1**
+
+    select * from test1;
+
+| id  |
+| --- |
+| 1   |
+
+---
+
+[View on DB Fiddle](https://www.db-fiddle.com/f/tBWUn8qF9KKLrjLm35yU6D/0)
