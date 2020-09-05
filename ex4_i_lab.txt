@@ -1,0 +1,26 @@
+**Schema (MySQL v5.7)**
+
+    create table student(usn integer primary key,name varchar(10),phno integer,branch varchar(10));
+    insert into student values(1,'sandhya',123,'CS');
+    insert into student values(2,'deepa',134,'CV');
+    insert into student values(3,'vindhya',231,'EC');
+    insert into student values(4,'mithun',453,'CS');
+    insert into student values(5,'chaitra',999,'CS');
+
+---
+
+**Query #1**
+
+    select * from student;
+
+| usn | name    | phno | branch |
+| --- | ------- | ---- | ------ |
+| 1   | sandhya | 123  | CS     |
+| 2   | deepa   | 134  | CV     |
+| 3   | vindhya | 231  | EC     |
+| 4   | mithun  | 453  | CS     |
+| 5   | chaitra | 999  | CS     |
+
+---
+
+[View on DB Fiddle](https://www.db-fiddle.com/f/tBWUn8qF9KKLrjLm35yU6D/0)
