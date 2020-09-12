@@ -1,0 +1,52 @@
+**Schema (MySQL v5.7)**
+
+    create table BOOK(Book_id integer primary key,Title varchar(30),Publisher_Name varchar(20),Pub_Year integer);
+    insert into BOOK values(01,'DBMS','xyz',2020);
+    insert into BOOK values(02,'ADE','abc',2019);
+    insert into BOOK values(03,'DS','lmn',2020);
+    insert into BOOK values(04,'OOC','pqr',2018);
+    insert into BOOK values(05,'CNS','jkl',2020);
+    insert into BOOK values(06,'ADE','iop',2019);
+    create table BOOK_COPIES(Book_id integer,Branch_id integer,No_of_Copies integer ,primary key(Book_id,Branch_id));
+
+---
+
+**Query #1**
+
+    select *from BOOK;
+
+| Book_id | Title | Publisher_Name | Pub_Year |
+| ------- | ----- | -------------- | -------- |
+| 1       | DBMS  | xyz            | 2020     |
+| 2       | ADE   | abc            | 2019     |
+| 3       | DS    | lmn            | 2020     |
+| 4       | OOC   | pqr            | 2018     |
+| 5       | CNS   | jkl            | 2020     |
+| 6       | ADE   | iop            | 2019     |
+
+---
+**Query #2**
+
+    select Book_id from BOOK;
+
+| Book_id |
+| ------- |
+| 1       |
+| 2       |
+| 3       |
+| 4       |
+| 5       |
+| 6       |
+
+---
+**Query #3**
+
+    select *from BOOK where Book_id=04;
+
+| Book_id | Title | Publisher_Name | Pub_Year |
+| ------- | ----- | -------------- | -------- |
+| 4       | OOC   | pqr            | 2018     |
+
+---
+
+[View on DB Fiddle](https://www.db-fiddle.com/)
