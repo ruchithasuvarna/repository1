@@ -1,0 +1,13 @@
+**Schema (MySQL v5.7)**
+
+    create table PUBLISHER(Name varchar(20) primary key,Address varchar(30),Phone varchar(10));
+    create table BOOK(Book_id integer,Title varchar(20),Publisher_Name varchar(20),Pub_Year integer, primary key (Book_id));
+    create table BOOK_AUTHORS(Book_id integer,Author_Name varchar(20),foreign key(Book_id) references BOOK(Book_id));
+    create table LIBRARY_BRANCH(Branch_id integer,Branch_Name varchar(20),Address varchar(30),primary key(Branch_id));
+    create table BOOK_COPIES(Book_id integer,Branch_id integer,No_of_Copies integer,foreign key(Book_id) references BOOK(Book_id),foreign key(Branch_id) references LIBRARY_BRANCH(Branch_id));
+    create table BOOK_LENDING(Book_id integer,Branch_id integer,Card_No integer,Date_Out varchar(10),Due_Date varchar(10),foreign key(Book_id) references BOOK(Book_id),foreign key(Branch_id) references LIBRARY_BRANCH(Branch_id));
+
+---
+
+
+[View on DB Fiddle](https://www.db-fiddle.com/f/nGAjpbe4VKRcAqQE6zCqnb/0)
