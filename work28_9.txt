@@ -1,0 +1,102 @@
+**Schema (MySQL v5.7)**
+
+    create table STUDENT(ssn integer primary key,name varchar(15),major varchar(10),bdate date);
+    create table COURSE(course_no integer primary key,cname varchar(15),dept varchar(10));
+    create table TEXT_BOOK(book_ISBN integer primary key,book_title varchar(10),publisher varchar(10),author varchar(10));
+    create table BOOK_ADOPTION(course_no integer, quarter integer,book_ISBN integer,primary key(course_no,quarter),foreign key(course_no)references COURSE(course_no),foreign key (book_ISBN) references TEXT_BOOK(book_ISBN));
+    create table ENROLL(ssn integer,course_no integer,quarter integer,grade varchar(10),primary key(ssn,course_no,quarter),foreign key(ssn)references STUDENT(ssn),foreign key(course_no,quarter) references BOOK_ADOPTION(course_no,quarter));
+    insert into STUDENT values(10,'MITHUN','CS','2020-10-28');
+    insert into STUDENT values(20,'CHAITRA','ME','2020-08-25');
+    insert into STUDENT values(30,'SOWMYA','EC','2014-02-06');
+    insert into STUDENT values(40,'RADHA','IS','2012-08-20');
+    insert into STUDENT values(50,'ROHITH','CS','2018-05-21');
+    insert into COURSE values(11,'JAVA','CS');
+    insert into COURSE values(12,'DBMS','IS');
+    insert into COURSE values(13,'PYTHON','IS');
+    insert into COURSE values(14,'ADE','CC');
+    insert into COURSE values(15,'ABCD','ME');
+    insert into TEXT_BOOK values(1,'IEEE','Mcgraw','aaa');
+    insert into TEXT_BOOK values(2,'CNS','Parson','bbb');
+    insert into TEXT_BOOK values(3,'SE','Michel','ccc');
+    insert into TEXT_BOOK values(4,'ADE','Alice','ddd');
+    insert into TEXT_BOOK values(5,'DAA','Andrew','ddd');
+    insert into BOOK_ADOPTION values(11,1,1);
+    insert into BOOK_ADOPTION values(12,2,2);
+    insert into BOOK_ADOPTION values(13,3,3);
+    insert into BOOK_ADOPTION values(14,4,4);
+    insert into BOOK_ADOPTION values(15,5,5);
+    insert into ENROLL values(40,11,1,'A');
+    insert into ENROLL values(20,14,4,'B');
+    insert into ENROLL values(30,13,3,'A');
+    insert into ENROLL values(10,12,2,'A');
+    insert into ENROLL values(50,15,5,'C');
+
+---
+
+**Query #1**
+
+    select *from STUDENT;
+
+| ssn | name    | major | bdate      |
+| --- | ------- | ----- | ---------- |
+| 10  | MITHUN  | CS    | 2020-10-28 |
+| 20  | CHAITRA | ME    | 2020-08-25 |
+| 30  | SOWMYA  | EC    | 2014-02-06 |
+| 40  | RADHA   | IS    | 2012-08-20 |
+| 50  | ROHITH  | CS    | 2018-05-21 |
+
+---
+**Query #2**
+
+    select *from COURSE;
+
+| course_no | cname  | dept |
+| --------- | ------ | ---- |
+| 11        | JAVA   | CS   |
+| 12        | DBMS   | IS   |
+| 13        | PYTHON | IS   |
+| 14        | ADE    | CC   |
+| 15        | ABCD   | ME   |
+
+---
+**Query #3**
+
+    select *from TEXT_BOOK;
+
+| book_ISBN | book_title | publisher | author |
+| --------- | ---------- | --------- | ------ |
+| 1         | IEEE       | Mcgraw    | aaa    |
+| 2         | CNS        | Parson    | bbb    |
+| 3         | SE         | Michel    | ccc    |
+| 4         | ADE        | Alice     | ddd    |
+| 5         | DAA        | Andrew    | ddd    |
+
+---
+**Query #4**
+
+    select *from BOOK_ADOPTION;
+
+| course_no | quarter | book_ISBN |
+| --------- | ------- | --------- |
+| 11        | 1       | 1         |
+| 12        | 2       | 2         |
+| 13        | 3       | 3         |
+| 14        | 4       | 4         |
+| 15        | 5       | 5         |
+
+---
+**Query #5**
+
+    select *from ENROLL;
+
+| ssn | course_no | quarter | grade |
+| --- | --------- | ------- | ----- |
+| 10  | 12        | 2       | A     |
+| 20  | 14        | 4       | B     |
+| 30  | 13        | 3       | A     |
+| 40  | 11        | 1       | A     |
+| 50  | 15        | 5       | C     |
+
+---
+
+[View on DB Fiddle](https://www.db-fiddle.com/)
