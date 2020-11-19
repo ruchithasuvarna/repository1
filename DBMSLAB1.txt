@@ -1,0 +1,381 @@
+**Schema (MySQL v5.7)**
+
+    create table PUBLISHER(Name varchar(20) primary key,Address varchar(30),Phone varchar(10));
+        create table BOOK(Book_id integer,Title varchar(20),Publisher_Name varchar(20),Pub_Year integer, primary key (Book_id),foreign key(Publisher_Name)references PUBLISHER(Name) ON DELETE CASCADE);
+        create table BOOK_AUTHORS(Book_id integer,Author_Name varchar(20),foreign key(Book_id) references BOOK(Book_id)on delete cascade);
+        create table LIBRARY_BRANCH(Branch_id integer,Branch_Name varchar(20),Address varchar(30),primary key(Branch_id));
+        create table BOOK_COPIES(Book_id integer,Branch_id integer,No_of_Copies integer,foreign key(Book_id) references BOOK(Book_id) on delete cascade,foreign key(Branch_id) references LIBRARY_BRANCH(Branch_id));
+        create table BOOK_LENDING(Book_id integer,Branch_id integer,Card_No integer,Date_Out Date,Due_Date Date,foreign key(Book_id) references BOOK(Book_id) on delete cascade,foreign key(Branch_id) references LIBRARY_BRANCH(Branch_id) on delete cascade);
+        insert into PUBLISHER values('Mcgraw','Bangalore','9696500001');
+        insert into PUBLISHER values('Person','Bangalore','9595950000');
+        insert into PUBLISHER values('SAM Pub','Mangalore','9494940000');
+        insert into PUBLISHER values('IOP','Mumbai','9797970000');
+        insert into PUBLISHER values('IEEE','Delhi','9090900000');
+        insert into BOOK values(10,'DBMS','Mcgraw',2010);
+        insert into BOOK values(20,'SE','Person',2008);
+        insert into BOOK values(30,'FLAT','SAM Pub',2019);
+        insert into BOOK values(40,'BDA','IOP',2018);
+        insert into BOOK values(50,'MP','IEEE',2020);
+        insert into BOOK_AUTHORS values(10,'Andrew');
+        insert into BOOK_AUTHORS values(20,'Raj Kumar');
+        insert into BOOK_AUTHORS values(30,'Samual');
+        insert into BOOK_AUTHORS values(40,'Padma');
+        insert into BOOK_AUTHORS values(50,'Guru');
+        insert into LIBRARY_BRANCH values(100,'Main Building','Mangalore');
+        insert into LIBRARY_BRANCH values(200,'Ground Floor','Bangalore');
+        insert into LIBRARY_BRANCH values(300,'1st Floor','Bangalore');
+        insert into LIBRARY_BRANCH values(400,'Research Building','Udupi');
+        insert into LIBRARY_BRANCH values(500,'ODP Building','Manipal');
+        insert into BOOK_COPIES values(10,100,20);
+        insert into BOOK_COPIES values(30,100,30);
+        insert into BOOK_COPIES values(10,200,5);
+        insert into BOOK_COPIES values(20,300,15);
+        insert into BOOK_COPIES values(40,500,7);
+        insert into BOOK_LENDING values(10,100,201,'2020-06-15','2020-06-25');
+        insert into BOOK_LENDING values(20,200,202,'2020-07-10','2020-07-20');
+        insert into BOOK_LENDING values(30,300,203,'2020-07-25','2020-07-30');
+        insert into BOOK_LENDING values(40,400,204,'2020-08-14','2020-08-26');
+        insert into BOOK_LENDING values(50,500,205,'2020-09-01','2020-09-10');
+    
+
+---
+
+**Query #1**
+
+    select *from PUBLISHER;
+
+| Name    | Address   | Phone      |
+| ------- | --------- | ---------- |
+| IEEE    | Delhi     | 9090900000 |
+| IOP     | Mumbai    | 9797970000 |
+| Mcgraw  | Bangalore | 9696500001 |
+| Person  | Bangalore | 9595950000 |
+| SAM Pub | Mangalore | 9494940000 |
+
+---
+**Query #2**
+
+    select *from BOOK;
+
+| Book_id | Title | Publisher_Name | Pub_Year |
+| ------- | ----- | -------------- | -------- |
+| 10      | DBMS  | Mcgraw         | 2010     |
+| 20      | SE    | Person         | 2008     |
+| 30      | FLAT  | SAM Pub        | 2019     |
+| 40      | BDA   | IOP            | 2018     |
+| 50      | MP    | IEEE           | 2020     |
+
+---
+**Query #3**
+
+    select *from BOOK_AUTHORS;
+
+| Book_id | Author_Name |
+| ------- | ----------- |
+| 10      | Andrew      |
+| 20      | Raj Kumar   |
+| 30      | Samual      |
+| 40      | Padma       |
+| 50      | Guru        |
+
+---
+**Query #4**
+
+    select *from LIBRARY_BRANCH;
+
+| Branch_id | Branch_Name       | Address   |
+| --------- | ----------------- | --------- |
+| 100       | Main Building     | Mangalore |
+| 200       | Ground Floor      | Bangalore |
+| 300       | 1st Floor         | Bangalore |
+| 400       | Research Building | Udupi     |
+| 500       | ODP Building      | Manipal   |
+
+---
+**Query #5**
+
+    select *from BOOK_COPIES;
+
+| Book_id | Branch_id | No_of_Copies |
+| ------- | --------- | ------------ |
+| 10      | 100       | 20           |
+| 30      | 100       | 30           |
+| 10      | 200       | 5            |
+| 20      | 300       | 15           |
+| 40      | 500       | 7            |
+
+---
+**Query #6**
+
+    select *from BOOK_LENDING;
+
+| Book_id | Branch_id | Card_No | Date_Out   | Due_Date   |
+| ------- | --------- | ------- | ---------- | ---------- |
+| 10      | 100       | 201     | 2020-06-15 | 2020-06-25 |
+| 20      | 200       | 202     | 2020-07-10 | 2020-07-20 |
+| 30      | 300       | 203     | 2020-07-25 | 2020-07-30 |
+| 40      | 400       | 204     | 2020-08-14 | 2020-08-26 |
+| 50      | 500       | 205     | 2020-09-01 | 2020-09-10 |
+
+---
+**Query #7**
+
+    select BOOK.Book_id, BOOK.Title, BOOK.Publisher_Name, BOOK_AUTHORS.Author_Name, BOOK_COPIES.No_of_Copies,LIBRARY_BRANCH.Branch_id from BOOK, BOOK_AUTHORS, BOOK_COPIES, LIBRARY_BRANCH where BOOK.Book_id=BOOK_AUTHORS.Book_id AND BOOK.Book_id=BOOK_COPIES.Book_id AND LIBRARY_BRANCH.Branch_id=BOOK_COPIES.Branch_id;
+
+| Book_id | Title | Publisher_Name | Author_Name | No_of_Copies | Branch_id |
+| ------- | ----- | -------------- | ----------- | ------------ | --------- |
+| 10      | DBMS  | Mcgraw         | Andrew      | 20           | 100       |
+| 30      | FLAT  | SAM Pub        | Samual      | 30           | 100       |
+| 10      | DBMS  | Mcgraw         | Andrew      | 5            | 200       |
+| 20      | SE    | Person         | Raj Kumar   | 15           | 300       |
+| 40      | BDA   | IOP            | Padma       | 7            | 500       |
+
+---
+**Query #8**
+
+    delete from BOOK where Book_id=10;
+
+There are no results to be displayed.
+
+---
+**Query #9**
+
+    select * from  BOOK;
+
+| Book_id | Title | Publisher_Name | Pub_Year |
+| ------- | ----- | -------------- | -------- |
+| 20      | SE    | Person         | 2008     |
+| 30      | FLAT  | SAM Pub        | 2019     |
+| 40      | BDA   | IOP            | 2018     |
+| 50      | MP    | IEEE           | 2020     |
+
+---
+**Query #10**
+
+    select Pub_year from BOOK;
+
+| Pub_year |
+| -------- |
+| 2008     |
+| 2019     |
+| 2018     |
+| 2020     |
+
+---
+**Query #11**
+
+    SELECT BOOK.Book_id, BOOK.Title, BOOK_COPIES.No_of_Copies FROM BOOK, BOOK_COPIES, LIBRARY_BRANCH WHERE BOOK.Book_id=BOOK_COPIES.Book_id AND BOOK_COPIES.Branch_id=LIBRARY_BRANCH.Branch_id;
+
+| Book_id | Title | No_of_Copies |
+| ------- | ----- | ------------ |
+| 20      | SE    | 15           |
+| 30      | FLAT  | 30           |
+| 40      | BDA   | 7            |
+
+---
+**Query #12**
+
+    select BOOK.Book_id,BOOK_AUTHORS.Author_Name from BOOK, BOOK_AUTHORS where  BOOK.Book_id=BOOK_AUTHORS.Book_id ;
+
+| Book_id | Author_Name |
+| ------- | ----------- |
+| 20      | Raj Kumar   |
+| 30      | Samual      |
+| 40      | Padma       |
+| 50      | Guru        |
+
+---
+**Query #13**
+
+    select Book_id,Title,Publisher_Name from BOOK;
+
+| Book_id | Title | Publisher_Name |
+| ------- | ----- | -------------- |
+| 20      | SE    | Person         |
+| 30      | FLAT  | SAM Pub        |
+| 40      | BDA   | IOP            |
+| 50      | MP    | IEEE           |
+
+---
+**Query #14**
+
+    insert into BOOK values(10,'DBMS','Mcgraw',2010);
+
+There are no results to be displayed.
+
+---
+**Query #15**
+
+    select Book_id,Title,Publisher_Name from BOOK;
+
+| Book_id | Title | Publisher_Name |
+| ------- | ----- | -------------- |
+| 10      | DBMS  | Mcgraw         |
+| 20      | SE    | Person         |
+| 30      | FLAT  | SAM Pub        |
+| 40      | BDA   | IOP            |
+| 50      | MP    | IEEE           |
+
+---
+**Query #16**
+
+    select BOOK.Book_id, BOOK.Title, BOOK.Publisher_Name, BOOK_AUTHORS.Author_Name, BOOK_COPIES.No_of_Copies,LIBRARY_BRANCH.Branch_id from BOOK, BOOK_AUTHORS, BOOK_COPIES, LIBRARY_BRANCH where BOOK.Book_id=BOOK_AUTHORS.Book_id AND BOOK.Book_id=BOOK_COPIES.Book_id AND LIBRARY_BRANCH.Branch_id=BOOK_COPIES.Branch_id;
+
+| Book_id | Title | Publisher_Name | Author_Name | No_of_Copies | Branch_id |
+| ------- | ----- | -------------- | ----------- | ------------ | --------- |
+| 20      | SE    | Person         | Raj Kumar   | 15           | 300       |
+| 30      | FLAT  | SAM Pub        | Samual      | 30           | 100       |
+| 40      | BDA   | IOP            | Padma       | 7            | 500       |
+
+---
+**Query #17**
+
+    select * from BOOK;
+
+| Book_id | Title | Publisher_Name | Pub_Year |
+| ------- | ----- | -------------- | -------- |
+| 10      | DBMS  | Mcgraw         | 2010     |
+| 20      | SE    | Person         | 2008     |
+| 30      | FLAT  | SAM Pub        | 2019     |
+| 40      | BDA   | IOP            | 2018     |
+| 50      | MP    | IEEE           | 2020     |
+
+---
+**Query #18**
+
+    select BOOK.Book_id, BOOK.Title, BOOK.Publisher_Name, BOOK_AUTHORS.Author_Name, BOOK_COPIES.No_of_Copies,LIBRARY_BRANCH.Branch_id from BOOK, BOOK_AUTHORS, BOOK_COPIES, LIBRARY_BRANCH where BOOK.Book_id=BOOK_AUTHORS.Book_id AND BOOK.Book_id=BOOK_COPIES.Book_id AND LIBRARY_BRANCH.Branch_id=BOOK_COPIES.Branch_id;
+
+| Book_id | Title | Publisher_Name | Author_Name | No_of_Copies | Branch_id |
+| ------- | ----- | -------------- | ----------- | ------------ | --------- |
+| 20      | SE    | Person         | Raj Kumar   | 15           | 300       |
+| 30      | FLAT  | SAM Pub        | Samual      | 30           | 100       |
+| 40      | BDA   | IOP            | Padma       | 7            | 500       |
+
+---
+**Query #19**
+
+    insert into BOOK_LENDING values(10,100,201,'2017-06-15','2020-06-25');
+
+There are no results to be displayed.
+
+---
+**Query #20**
+
+    insert into BOOK_LENDING values(20,200,202,'2017-05-10','2017-05-20');
+
+There are no results to be displayed.
+
+---
+**Query #21**
+
+    insert into BOOK_LENDING values(30,300,203,'2017-07-25','2017-07-25');
+
+There are no results to be displayed.
+
+---
+**Query #22**
+
+    insert into BOOK_LENDING values(40,400,204,'2017-08-14','2017-08-26');
+
+There are no results to be displayed.
+
+---
+**Query #23**
+
+    insert into BOOK_LENDING values(50,500,205,'2017-09-01','2017-09-10');
+
+There are no results to be displayed.
+
+---
+**Query #24**
+
+    insert into BOOK_LENDING values(10,100,202,'2017-05-11','2017-05-21');
+
+There are no results to be displayed.
+
+---
+**Query #25**
+
+    insert into BOOK_LENDING values(10,100,202,'2017-05-15','2017-06-25');
+
+There are no results to be displayed.
+
+---
+**Query #26**
+
+    insert into BOOK_LENDING values(10,100,202,'2017-04-15','2017-06-25');
+
+There are no results to be displayed.
+
+---
+**Query #27**
+
+    select * from BOOK_LENDING;
+
+| Book_id | Branch_id | Card_No | Date_Out   | Due_Date   |
+| ------- | --------- | ------- | ---------- | ---------- |
+| 20      | 200       | 202     | 2020-07-10 | 2020-07-20 |
+| 30      | 300       | 203     | 2020-07-25 | 2020-07-30 |
+| 40      | 400       | 204     | 2020-08-14 | 2020-08-26 |
+| 50      | 500       | 205     | 2020-09-01 | 2020-09-10 |
+| 10      | 100       | 201     | 2017-06-15 | 2020-06-25 |
+| 20      | 200       | 202     | 2017-05-10 | 2017-05-20 |
+| 30      | 300       | 203     | 2017-07-25 | 2017-07-25 |
+| 40      | 400       | 204     | 2017-08-14 | 2017-08-26 |
+| 50      | 500       | 205     | 2017-09-01 | 2017-09-10 |
+| 10      | 100       | 202     | 2017-05-11 | 2017-05-21 |
+| 10      | 100       | 202     | 2017-05-15 | 2017-06-25 |
+| 10      | 100       | 202     | 2017-04-15 | 2017-06-25 |
+
+---
+**Query #28**
+
+    SELECT Card_No FROM BOOK_LENDING where Date_Out BETWEEN '2017-01-15' AND '2017-06-25' group by Card_No having count(*)>3;
+
+| Card_No |
+| ------- |
+| 202     |
+
+---
+**Query #29**
+
+    create view V_BOOKS as select B.Book_id,B.Title,C.No_of_Copies from BOOK B,BOOK_COPIES C, LIBRARY_BRANCH L WHERE B.Book_id=C.Book_id and C.Branch_id=L.Branch_id;
+
+There are no results to be displayed.
+
+---
+**Query #30**
+
+    select * from V_BOOKS;
+
+| Book_id | Title | No_of_Copies |
+| ------- | ----- | ------------ |
+| 30      | FLAT  | 30           |
+| 20      | SE    | 15           |
+| 40      | BDA   | 7            |
+
+---
+**Query #31**
+
+    CREATE VIEW V_PUBLICATION AS SELECT
+    PUB_YEAR
+    FROM BOOK;
+
+There are no results to be displayed.
+
+---
+**Query #32**
+
+    select * from V_PUBLICATION;
+
+| PUB_YEAR |
+| -------- |
+| 2010     |
+| 2008     |
+| 2019     |
+| 2018     |
+| 2020     |
+
+---
+
+[View on DB Fiddle](https://www.db-fiddle.com/f/nGAjpbe4VKRcAqQE6zCqnb/21)
